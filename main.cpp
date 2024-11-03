@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 using namespace std;
+
 class Matrix {
 public:
 	int matrix_size;
@@ -76,23 +77,25 @@ void print_matrix(const Matrix& matrix) {
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
 void print_matrix(const Matrix& matrix_1, const Matrix& matrix_2) {
     // TODO: Print both matrices to the console
-	cout << "Matrix 1" << endl;
+	cout << "Matrix 1:" << endl;
     for(int i=0; i<matrix_1.matrix_size; i++) {
 		for(int j=0; j <matrix_1.matrix_size; j++) {
 			cout << matrix_1.matrix_data[i][j] << " ";
 		}
 		cout << endl;
 	}
-	cout << "Matrix 2" << endl;
+	cout << endl << "Matrix 2:" << endl;
     for(int i=0; i<matrix_2.matrix_size; i++) {
 		for(int j=0; j <matrix_2.matrix_size; j++) {
 			cout << matrix_2.matrix_data[i][j] << " ";
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
 // Overloaded + operator for matrix addition
 Matrix operator+(const Matrix& matrix_1, const Matrix& matrix_2) {
@@ -152,41 +155,51 @@ void get_diagonal_sum(const Matrix& matrix) {
 	for(int i=0; i<size; i++){
 		sum += matrix.matrix_data[i][i];
 	}
-	cout << "Sum of matrix: " << sum << endl;
+	cout << "Sum of matrix: " << sum << endl << endl;
 }
 void swap_matrix_row(Matrix& matrix, int row1, int row2) {
     // TODO: Swap the rows 'row1' and 'row2' in the matrix
     //    Handle invalid row indices
 
 	if (row1 >= 0 && row1 < matrix.matrix_size && row2 >= 0 && row2 < matrix.matrix_size) {
-		swap(matrix.matrix_data[row1], matrix.matrix_data[row2]); // std::swap() swaps two pointers
+		swap(matrix.matrix_data[row1], matrix.matrix_data[row2]); // swap() swaps two pointers
 	} else {
 		throw out_of_range("Invalid row indices");
 	}
 }
 int main(int argc, char* argv[]) {
+	const string RESET = "\033[0m";
+	const string RED = "\033[31m";
+	const string GREEN = "\033[32m";
+	const string BLUE = "\033[34m";
+
+
+
     Matrix matrix_1, matrix_2;
     read_matrix_from_file("matrix.txt", matrix_1, matrix_2);
 
-    cout << "print_matrix" << endl;
+    cout << RED << "print_matrix" << RESET << endl;
     print_matrix(matrix_1, matrix_2);
 
-    cout << "add_matrices result:" << endl;
+    cout << BLUE << "add_matrices result:" << RESET << endl;
     Matrix add_result_1 = add_matrices(matrix_1, matrix_2);
     Matrix add_result_2 = matrix_1 + matrix_2;
     print_matrix(add_result_1);
     print_matrix(add_result_2);
 
-    cout << "multiply_matrices result:" << endl;
+    cout << GREEN << "multiply_matrices result:" << RESET << endl;
     Matrix multiply_result_1 = multiply_matrices(matrix_1, matrix_2);
     Matrix multiply_result_2 = matrix_1 * matrix_2;
-    print_matrix(multiply_result_1);
-    print_matrix(multiply_result_2);
+	Matrix multiply_result_3 = matrix_2 * matrix_1;
 
-    cout << "get matrix diagonal sum" << endl;
+	print_matrix(multiply_result_1);
+	print_matrix(multiply_result_2);
+	print_matrix(multiply_result_3);
+
+    cout << RED << "get matrix diagonal sum" << RESET << endl;
     get_diagonal_sum(matrix_1);
 
-    cout << "swap matrix rows" << endl;
+    cout << BLUE << "swap matrix rows" << RESET << endl;
     swap_matrix_row(matrix_1, 0, 1);
 	print_matrix(matrix_1);
     return 0;
